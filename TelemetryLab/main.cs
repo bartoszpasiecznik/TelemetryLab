@@ -1,14 +1,4 @@
-﻿// namespace TelemetryLab;
-//
-// class main
-// {
-//     static void Main(string[] args)
-//     {
-//         Console.WriteLine("Hello, World!");
-//     }
-// }
-
-using System;
+﻿using System;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using TelemetryLab;
@@ -22,18 +12,8 @@ class main
 
         try
         {
-            // MappedBuffer<SharedMemoryGeneric> _generic = new MappedBuffer<SharedMemoryGeneric>(LMUConstants.MM_TELEMETRY_FILE_NAME);
-            // MappedBuffer<SharedMemoryPathData> _paths = new MappedBuffer<SharedMemoryPathData>(LMUConstants.MM_TELEMETRY_FILE_NAME);
-            // MappedBuffer<SharedMemoryScoringData> _scoring = new MappedBuffer<SharedMemoryScoringData>(LMUConstants.MM_TELEMETRY_FILE_NAME);
-            // MappedBuffer<SharedMemoryTelemtryData> _telemetry = new MappedBuffer<SharedMemoryTelemtryData>(LMUConstants.MM_TELEMETRY_FILE_NAME);
-            // _generic.Connect();
-            // _paths.Connect();
-            // _scoring.Connect();
-            // _telemetry.Connect();
-            // LmuFullData fullData = new LmuFullData(_generic.GetMappedDataUnSynchronized(), _paths.GetMappedDataUnSynchronized(), _scoring.GetMappedDataUnSynchronized(), _telemetry.GetMappedDataUnSynchronized());
-
             MappedBuffer<SharedMemoryLayout> _dataOut =
-                new MappedBuffer<SharedMemoryLayout>(LMUConstants.MM_TELEMETRY_FILE_NAME);
+                new MappedBuffer<SharedMemoryLayout>(LMUConstants.TELEMETRY_FILE_NAME);
             
             _dataOut.Connect();
 
@@ -41,15 +21,20 @@ class main
             var generic_data = fullData.data.generic;
             var scor_data =  fullData.data.scoring;
             var telemetry_data = fullData.data.telemetry;
+            var path_data = fullData.data.paths;
 
             var player_index = telemetry_data.playerVehicleIdx;
             var selected_player_index = 0;
             
             var player_telemetry_data = telemetry_data.telemInfo[selected_player_index];
             
-            Console.WriteLine(scor_data.scoringInfo.mAmbientTemp);
+            Console.WriteLine($"Scoring data player name: {scor_data.scoringInfo.mPlayerName}");
+            Console.WriteLine($"Player data vehicle name: {player_telemetry_data.mVehicleName}");
+            Console.WriteLine($"Vehicle data vehicle name: {scor_data.vehScoringInfo[player_index].mVehicleName}");
+            Console.WriteLine($"Vehicle data vehicle Class: {scor_data.vehScoringInfo[player_index].mVehicleClass}");
+            Console.WriteLine($"Scoring data Track Name: {scor_data.scoringInfo.mTrackName}");
             
-            Console.WriteLine(scor_data.scoringInfo.mTrackName);
+            Thread.Sleep(1000);
             
             while (true)
             {

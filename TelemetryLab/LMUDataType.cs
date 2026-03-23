@@ -7,7 +7,7 @@ namespace TelemetryLab;
 public readonly struct SharedMemoryScoringData { // Remember to check CopySharedMemoryObj still works properly when updating this struct
     public readonly ScoringInfoV01 scoringInfo;
     public readonly ulong scoringStreamSize;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 104)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_MAPPED_VEHICLES)]
     public readonly VehicleScoringInfoV01[] vehScoringInfo; // MUST NOT BE MOVED!
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 65536)]
     public readonly char[] scoringStream;
@@ -18,22 +18,22 @@ public readonly struct SharedMemoryTelemtryData { // Remember to check CopyShare
     public readonly byte activeVehicles;
     public readonly byte playerVehicleIdx;
     public readonly byte playerHasVehicle;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 104)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_MAPPED_VEHICLES)]
     public readonly TelemInfoV01[] telemInfo;
 };
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
 public readonly struct SharedMemoryPathData {
     // MAX_PATH = 260
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
     public readonly byte[] userData;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
     public readonly byte[] customVariables;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
     public readonly byte[] stewardResults;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
     public readonly byte[] playerProfile;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
     public readonly byte[] pluginsFolder;
 };
 
@@ -140,7 +140,7 @@ public readonly struct TelemWheelV01
   public readonly double[] mTemperature;        // Kelvin (subtract 273.15 to get Celsius), left/center/right (not to be confused with inside/center/outside!)
   public readonly double mWear;                  // wear (0.0-1.0, fraction of maximum) ... this is not necessarily proportional with grip loss
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-  public readonly byte[] mTerrainName;         // the material prefixes from the TDF file
+  public readonly char[] mTerrainName;         // the material prefixes from the TDF file
   public readonly byte mSurfaceType;    // 0=dry, 1=wet, 2=grass, 3=dirt, 4=gravel, 5=rumblestrip, 6=special
   public readonly byte mFlat;                    // whether tire is flat
   public readonly byte mDetached;                // whether wheel is detached
@@ -183,9 +183,9 @@ public readonly struct TelemInfoV01
   public readonly int mLapNumber;               // current lap number
   public readonly double mLapStartET;            // time this lap was started
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-  public readonly byte[] mVehicleName;         // current vehicle name
+  public readonly char[] mVehicleName;         // current vehicle name
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-  public readonly byte[] mTrackName;           // current track name
+  public readonly char[] mTrackName;           // current track name
 
   // Position and derivatives
   public readonly TelemVect3 mPos;               // world position in meters
@@ -258,9 +258,9 @@ public readonly struct TelemInfoV01
   public readonly byte mIgnitionStarter;          // 0=off 1=ignition 2=ignition+starter
 
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 18)]
-  public readonly byte[] mFrontTireCompoundName;         // name of front tire compound
+  public readonly char[] mFrontTireCompoundName;         // name of front tire compound
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 18)]
-  public readonly byte[] mRearTireCompoundName;          // name of rear tire compound
+  public readonly char[] mRearTireCompoundName;          // name of rear tire compound
 
   public readonly byte mSpeedLimiterAvailable;    // whether speed limiter is available
   public readonly byte mAntiStallActivated;       // whether (hard) anti-stall is activated
@@ -376,9 +376,9 @@ public readonly struct VehicleScoringInfoV01
 {
   public readonly int mID;                      // slot ID (note that it can be re-used in multiplayer after someone leaves)
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-  public readonly byte[] mDriverName;          // driver name
+  public readonly char[] mDriverName;          // driver name
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-  public readonly byte[] mVehicleName;         // vehicle name
+  public readonly char[] mVehicleName;         // vehicle name
   public readonly short mTotalLaps;              // laps completed
   public readonly sbyte mSector;           // 0=sector3, 1=sector1, 2=sector2 (don't ask why)
   public readonly sbyte mFinishStatus;     // 0=none, 1=finished, 2=dnf, 3=dq
@@ -404,7 +404,7 @@ public readonly struct VehicleScoringInfoV01
   public readonly byte mInPits;                  // between pit entrance and pit exit (not always accurate for remote vehicles)
   public readonly byte mPlace;          // 1-based position
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-  public readonly byte[] mVehicleClass;        // vehicle class
+  public readonly char[] mVehicleClass;        // vehicle class
 
   // Dash Indicators
   public readonly double mTimeBehindNext;        // time behind vehicle in next higher place
@@ -437,7 +437,7 @@ public readonly struct VehicleScoringInfoV01
   public readonly double mEstimatedLapTime;      // estimated laptime used for 'time behind' and 'time into lap' (note: this may changed based on vehicle and setup!?)
   
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
-  public readonly byte[] mPitGroup;            // pit group (same as team name unless pit is shared)
+  public readonly char[] mPitGroup;            // pit group (same as team name unless pit is shared)
   public readonly byte mFlag;           // primary flag being shown to vehicle (currently only 0=green or 6=blue)
   public readonly byte mUnderYellow;             // whether this car has taken a full-course caution flag at the start/finish line
   public readonly byte mCountLapFlag;   // 0 = do not count lap or time, 1 = count lap but not time, 2 = count lap and time
@@ -453,7 +453,7 @@ public readonly struct VehicleScoringInfoV01
   public readonly ulong mSteamID;            // SteamID of the current driver (if any)
 
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-  public readonly byte[] mVehFilename;		// filename of veh file used to identify this vehicle.
+  public readonly char[] mVehFilename;		// filename of veh file used to identify this vehicle.
 
   public readonly short mAttackMode;
 
@@ -472,7 +472,7 @@ public readonly struct VehicleScoringInfoV01
 public readonly struct ScoringInfoV01
 {
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-  public readonly byte[] mTrackName;           // current track name
+  public readonly char[] mTrackName;           // current track name
   public readonly int mSession;                 // current session (0=testday 1-4=practice 5-8=qual 9=warmup 10-13=race)
   public readonly double mCurrentET;             // current time
   public readonly double mEndET;                 // ending time
@@ -515,9 +515,9 @@ public readonly struct ScoringInfoV01
   public readonly byte mNumRedLights;     // number of red lights in start sequence
   public readonly byte mInRealtime;                // in realtime as opposed to at the monitor
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-  public readonly byte[] mPlayerName;            // player name (including possible multiplayer override)
+  public readonly char[] mPlayerName;            // player name (including possible multiplayer override)
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-  public readonly byte[] mPlrFileName;           // may be encoded to be a legal filename
+  public readonly char[] mPlrFileName;           // may be encoded to be a legal filename
 
   // weather
   public readonly double mDarkCloud;               // cloud darkness? 0.0-1.0
@@ -535,7 +535,7 @@ public readonly struct ScoringInfoV01
   public readonly uint mServerPublicIP; // the public IP address of the server (if on a server)
   public readonly int mMaxPlayers; // maximum number of vehicles that can be in the session
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-  public readonly byte[] mServerName; // name of the server
+  public readonly char[] mServerName; // name of the server
   public readonly float mStartET; // start time (seconds since midnight) of the event
 
   //
@@ -663,7 +663,7 @@ public readonly struct ApplicationStateV01 {
   public readonly uint mWindowed;              // really just a byteean whether we are in windowed mode
   public readonly byte mOptionsLocation;       // 0=main UI, 1=track loading, 2=monitor, 3=on track
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 31)]
-  public readonly byte[] mOptionsPage;              // the name of the options page
+  public readonly char[] mOptionsPage;              // the name of the options page
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 204)]
   public readonly byte[] mExpansion;      // future use
 };
