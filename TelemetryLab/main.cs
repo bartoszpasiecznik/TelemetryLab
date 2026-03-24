@@ -2,6 +2,8 @@
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using TelemetryLab;
+using TelemetryLab.BasicAttributes;
+using TelemetryLab.Models;
 
 
 class main
@@ -34,6 +36,8 @@ class main
             string vehDataVehClass = new string(scor_data.vehScoringInfo[player_index].mVehicleClass);
             string trackName = new string(scor_data.scoringInfo.mTrackName);
             string rearCompound = new string(player_telemetry_data.mRearTireCompoundName);
+            Velocity curSpeed = new Velocity();
+            curSpeed = Velocity.FromMs(0);
             
             Console.WriteLine($"Scoring data player name: {playerName}");
             Console.WriteLine($"Player data vehicle name: {vehNamePlayerTelemetry}");
@@ -48,9 +52,21 @@ class main
             {
                 
 
-                Console.WriteLine($"Speed: {player_telemetry_data.mLocalVel}");
-                Console.WriteLine($"RPM: {player_telemetry_data.mEngineRPM}");
+                fullData = _dataOut.GetMappedDataUnSynchronized();
+
+                telemetry_data = fullData.data.telemetry;
+                player_index = telemetry_data.playerVehicleIdx;
+
+                player_telemetry_data = telemetry_data.telemInfo[player_index];
+                curSpeed = Velocity.FromMs(Math.Sqrt(
+                    (player_telemetry_data.mLocalVel.x * player_telemetry_data.mLocalVel.x) +
+                    (player_telemetry_data.mLocalVel.y * player_telemetry_data.mLocalVel.y) +
+                    (player_telemetry_data.mLocalVel.z * player_telemetry_data.mLocalVel.z)));
+
+                Console.WriteLine($"Speed: {curSpeed.InKph.ToString("F0")} km/h");
+                Console.WriteLine($"RPM: {player_telemetry_data.mEngineRPM.ToString("F0")}");
                 Console.WriteLine($"Gear: {player_telemetry_data.mGear}");
+
                 Thread.Sleep(100);
             }
         }
