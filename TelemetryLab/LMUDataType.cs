@@ -17,7 +17,7 @@ public readonly struct SharedMemoryScoringData { // Remember to check CopyShared
 public readonly struct SharedMemoryTelemtryData { // Remember to check CopySharedMemoryObj still works properly when updating this struct
     public readonly byte activeVehicles;
     public readonly byte playerVehicleIdx;
-    public readonly byte playerHasVehicle;
+    public readonly bool playerHasVehicle;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_MAPPED_VEHICLES)]
     public readonly TelemInfoV01[] telemInfo;
 };
@@ -26,15 +26,15 @@ public readonly struct SharedMemoryTelemtryData { // Remember to check CopyShare
 public readonly struct SharedMemoryPathData {
     // MAX_PATH = 260
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
-    public readonly byte[] userData;
+    public readonly char[] userData;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
-    public readonly byte[] customVariables;
+    public readonly char[] customVariables;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
-    public readonly byte[] stewardResults;
+    public readonly char[] stewardResults;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
-    public readonly byte[] playerProfile;
+    public readonly char[] playerProfile;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_PATH)]
-    public readonly byte[] pluginsFolder;
+    public readonly char[] pluginsFolder;
 };
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
