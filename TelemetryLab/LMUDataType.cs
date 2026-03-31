@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using Microsoft.VisualBasic;
 
 namespace TelemetryLab;
 
@@ -79,6 +78,23 @@ public enum SharedMemoryEvent : uint {
     // SME_MAX
 };
 
+public enum IP_VehicleClass : byte {
+  Hypercar = 0x00,
+  LMP2_ELMS = 0x02,
+  LMP2,
+  LMP3,
+  GTE,
+  GT3,
+  PaceCar = 0x08,
+  Unknown = 0xFF
+};
+
+public enum IP_VehicleChampionship : byte {
+  WEC_2023 = 0x00, WEC_2024, WEC_2025, WEC_2026,
+  ELMS_2025 = 0X10, ELMS_2026,
+  Unknown = 0xFF
+};
+
 //#########################################################################
 //# Version01 public readonly structures                                                   #
 //##########################################################################
@@ -135,7 +151,6 @@ public readonly struct TelemWheelV01
 
   public readonly double mGripFract;             // an approximation of what fraction of the contact patch is sliding
   public readonly double mPressure;              // kPa (tire pressure)
-
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
   public readonly double[] mTemperature;        // Kelvin (subtract 273.15 to get Celsius), left/center/right (not to be confused with inside/center/outside!)
   public readonly double mWear;                  // wear (0.0-1.0, fraction of maximum) ... this is not necessarily proportional with grip loss
@@ -154,7 +169,11 @@ public readonly struct TelemWheelV01
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
   public readonly double[] mTireInnerLayerTemperature; // rough average of temperature samples from innermost layer of rubber (before carcass) (Kelvin)
   
-  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
+  public readonly float mOptimalTemp;
+  public readonly byte mCompoundIndex;
+  public readonly byte mCompoundType;
+  
+  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 18)]
   public readonly byte[] mExpansion;// for future use
 };
 
@@ -286,8 +305,44 @@ public readonly struct TelemInfoV01
   public readonly double mElectricBoostWaterTemperature; // current water temperature of boost motor cooler if present (0 otherwise)
   public readonly byte mElectricBoostMotorState; // 0=unavailable 1=inactive, 2=propulsion, 3=regeneration
   
+  //New since 1.3 update
+  public readonly byte mLapInvalidated;
+  public readonly byte mABSActive;
+  public readonly byte mTCActive;
+  public readonly byte mSpeedLimiterActive;
+  public readonly byte mWiperState; 
+  public readonly byte mTC;
+  public readonly byte mTCMax;
+  public readonly byte mTCSlip;
+  public readonly byte mTCSlipMax;
+  public readonly byte mTCCut;
+  public readonly byte mTCCutMax;
+  public readonly byte mABS;
+  public readonly byte mABSMax;
+  public readonly byte mMotorMap;
+  public readonly byte mMotorMapMax;
+  public readonly byte mMigration;
+  public readonly byte mMigrationMax;
+  public readonly byte mFrontAntiSway;
+  public readonly byte mFrontAntiSwayMax;
+  public readonly byte mRearAntiSway;
+  public readonly byte mRearAntiSwayMax;
+  public readonly byte mLiftAndCoastProgress;
+  public readonly byte mTrackLimitsSteps; // Normalized track limits points (TrackLimitPoints * TrackLimitStepsPerPoint)
+  public readonly float mRegen; //kW
+  public readonly float mSoC;
+  public readonly float mVirtualEnergy;
+  public readonly float mTimeGapCarAhead;
+  public readonly float mTimeGapCarBehind;
+  public readonly float mTimeGapPlaceAhead;
+  public readonly float mTimeGapPlaceBehind;
+  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 30)]
+  public readonly byte[] mVehicleModel;
+  public readonly IP_VehicleClass mVehicleClass;
+  public readonly IP_VehicleChampionship mVehicleChampionship;
+  
   // Future use
-  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 111-8)]
+  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)] //103 was before, now its 20 - so new things take 83 bytes total
   public readonly byte[] mExpansion; // for future use (note that the slot ID has been moved to mID above)
 
   // keeping this at the end of the public readonly structure to make it easier to replace in future versions
@@ -312,15 +367,16 @@ public readonly struct GraphicsInfoV01
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
 public readonly struct GraphicsInfoV02
 {
-  public readonly TelemVect3 mCamPos;            // camera position
-  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-  public readonly TelemVect3[] mCamOri;         // rows of orientation matrix (use TelemQuat conversions if desired), also converts local
-  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-  public readonly byte[] mHWND;                    // app handle
-
-  public readonly double mAmbientRed;
-  public readonly double mAmbientGreen;
-  public readonly double mAmbientBlue;
+  //below things commented after 1.3 update
+  // public readonly TelemVect3 mCamPos;            // camera position
+  // [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+  // public readonly TelemVect3[] mCamOri;         // rows of orientation matrix (use TelemQuat conversions if desired), also converts local
+  // [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+  // public readonly byte[] mHWND;                    // app handle
+  //
+  // public readonly double mAmbientRed;
+  // public readonly double mAmbientGreen;
+  // public readonly double mAmbientBlue;
   public readonly int mID;                      // slot ID being viewed (-1 if invalid)
 
   // Camera types (some of these may only be used for *setting* the camera type in WantsToViewVehicle())
@@ -540,9 +596,16 @@ public readonly struct ScoringInfoV01
 
   //
   public readonly double mAvgPathWetness;          // average wetness on main path 0.0-1.0
+  public readonly float mSessionTimeRemaining;
+  public readonly float mTimeOfDay;
+  public readonly byte mIsFixedSetup;
+  public readonly byte mTrackGripLevel;
+  public readonly byte mCloudCoverage;
+  public readonly byte mTrackLimitsStepsPerPenalty;
+  public readonly byte mTrackLimitsStepsPerPoint;
 
   // Future use
-  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 200)]
+  [MarshalAs(UnmanagedType.ByValArray, SizeConst = 187)] //1.3 update, changed from 200 to 187 - 13 bytes
   public readonly byte[] mExpansion;
 
   // keeping this at the end of the public readonly structure to make it easier to replace in future versions
