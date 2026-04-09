@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace TelemetryLab;
+namespace TelemetryLab.Data;
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
 public readonly struct SharedMemoryScoringData { // Remember to check CopySharedMemoryObj still works properly when updating this struct
@@ -16,7 +16,7 @@ public readonly struct SharedMemoryScoringData { // Remember to check CopyShared
 public readonly struct SharedMemoryTelemtryData { // Remember to check CopySharedMemoryObj still works properly when updating this struct
     public readonly byte activeVehicles;
     public readonly byte playerVehicleIdx;
-    public readonly bool playerHasVehicle;
+    public readonly byte playerHasVehicle;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = LMUConstants.MAX_MAPPED_VEHICLES)]
     public readonly TelemInfoV01[] telemInfo;
 };
@@ -38,7 +38,7 @@ public readonly struct SharedMemoryPathData {
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
 public readonly struct SharedMemoryGeneric {
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 15)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
     public readonly SharedMemoryEvent[] events;
     public readonly long gameVersion;
     public readonly float FFBTorque;

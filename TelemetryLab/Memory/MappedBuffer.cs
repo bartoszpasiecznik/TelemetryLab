@@ -1,7 +1,7 @@
 ﻿using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace TelemetryLab;
+namespace TelemetryLab.Memory;
 
 public class MappedBuffer<TMappedBufferT> where TMappedBufferT : struct
     {

@@ -1,4 +1,4 @@
-﻿namespace TelemetryLab.BasicAttributes;
+﻿namespace TelemetryLab.Math;
 
 public class Velocity
 {

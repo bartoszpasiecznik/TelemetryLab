@@ -1,4 +1,4 @@
-﻿namespace TelemetryLab;
+﻿namespace TelemetryLab.Data;
 
 public class LMUConstants
 {
