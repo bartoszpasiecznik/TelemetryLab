@@ -1,3 +1,7 @@
 <Solution>
-  <Project Path="TelemetryLab/TelemetryLab.csproj" />
+  <Project Path="TelemetryLab.Api/TelemetryLab.Api.csproj" />
+  <Project Path="TelemetryLab.Collector/TelemetryLab.Collector.csproj" />
+  <Project Path="TelemetryLab.Domain/TelemetryLab.Domain.csproj" />
+  <Project Path="TelemetryLab.Infrastructure/TelemetryLab.Infrastructure.csproj" />
+  <Project Path="TelemetryLab.Web/TelemetryLab.Web.csproj" />
 </Solution>

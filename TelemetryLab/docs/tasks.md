@@ -10,7 +10,7 @@
 - [x] Decide whether telemetry uploads happen after session end only for v1
 
 ### Track 2: Repository Setup
-- [ ] Split the solution into projects:
+- [x] Split the solution into projects:
   collector, api, web, domain, infrastructure
 - [ ] Add shared coding conventions
 - [ ] Add configuration handling for local development
@@ -34,7 +34,7 @@
 - [ ] Define how lap samples are aligned for same-user and cross-user comparisons
 
 ### Track 5: Backend
-- [ ] Create ASP.NET Core API project
+- [x] Create ASP.NET Core API project
 - [ ] Add database and EF Core migrations
 - [ ] Create authentication flow
 - [ ] Create upload endpoint for completed sessions
@@ -44,7 +44,7 @@
 - [ ] Add notification event generation for new team records
 
 ### Track 6: Web App
-- [ ] Create Blazor web app project
+- [x] Create Blazor web app project
 - [ ] Add login and profile pages
 - [ ] Build session list page
 - [ ] Build lap detail page
@@ -77,8 +77,8 @@
 - [ ] Create a sample local session JSON file from one run
 - [ ] Write the `Session`, `Lap`, and `TelemetrySample` domain classes
 - [ ] Create a simple ERD or table list for the core database
-- [ ] Scaffold the ASP.NET Core API project
-- [ ] Scaffold the Blazor web app project
+- [x] Scaffold the ASP.NET Core API project
+- [x] Scaffold the Blazor web app project
 
 ## Definition Of Done For A Task
 - Code is understandable and named clearly
