@@ -2,12 +2,12 @@ namespace TelemetryLab.Domain;
 
 public class Car
 {
-    public Car(string carName, string className)
+    public Car(string name, string className)
     {
-        CarName = carName;
+        Name = name;
         ClassName = className;
     }
-    
-    public string CarName { get; set; }
+
+    public string Name { get; set; }
     public string ClassName { get; set; }
 }
