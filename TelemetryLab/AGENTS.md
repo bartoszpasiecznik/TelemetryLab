@@ -150,3 +150,15 @@ Do not jump to advanced team planning or live telemetry until historical session
 
 ## Current Repo State
 The repo already contains early telemetry reader code under the existing `TelemetryLab` project. Treat that code as the starting prototype for the future collector application.
+
+The domain project now contains a first-pass capture/review model:
+
+- `TelemetryLab.Domain/Entities/Session`
+- `TelemetryLab.Domain/Entities/Lap`
+- `TelemetryLab.Domain/Entities/TelemetrySample`
+- `TelemetryLab.Domain/Entities/Track`
+- `TelemetryLab.Domain/Entities/Car`
+- `TelemetryLab.Domain/Enums/SessionType`
+- `TelemetryLab.Domain/Enums/TyreType`
+
+These types should be treated as the current starting point for database design, collector-to-domain mapping, and upload contract planning.

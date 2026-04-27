@@ -123,6 +123,23 @@ Core entities:
 - TyreAllocation
 - TyreSet
 
+Current implemented first pass in `TelemetryLab.Domain`:
+- `Entities/Session`
+- `Entities/Lap`
+- `Entities/TelemetrySample`
+- `Entities/Track`
+- `Entities/Car`
+- `Enums/SessionType`
+- `Enums/TyreType`
+
+Current modeling decisions:
+- `Session` owns `Track` and `Car`
+- `Lap` belongs to `Session` and stores lap summaries such as lap time, sector times, fuel used, virtual energy used, top speed, validity, and tyre type
+- `TelemetrySample` belongs to `Lap` and stores lap-relative telemetry points for charts and track playback
+- `TelemetrySample.RelativeTimeOffset` is lap-relative
+- speed values are intended to be stored in `km/h`
+- `Track` currently keeps `LapDistance` as track-layout metadata unless future telemetry mapping proves it unreliable
+
 ## Architecture Rules
 - Keep business logic out of controllers and UI components
 - Prefer explicit domain services for calculations

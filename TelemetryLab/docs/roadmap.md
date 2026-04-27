@@ -10,6 +10,10 @@ Deliverables:
 - repository structure
 - coding standards and task list
 
+Current progress:
+- initial capture/review domain entities are now defined in `TelemetryLab.Domain`
+- domain files are organized into `Entities` and `Enums`
+
 ## Phase 1: Telemetry Capture Prototype
 Goal: prove local collection and domain modeling.
 
@@ -19,6 +23,9 @@ Deliverables:
 - lap detection and lap summary generation
 - local persistence of collected sessions
 - sample export for debugging
+
+Current progress:
+- the domain layer now has first-pass `Session`, `Lap`, and `TelemetrySample` models ready for collector mapping
 
 Exit criteria:
 - one user can run sessions repeatedly and inspect saved local data

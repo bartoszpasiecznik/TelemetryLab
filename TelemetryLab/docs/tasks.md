@@ -28,6 +28,7 @@
 
 ### Track 4: Domain Modeling
 - [ ] Define entities for users, sessions, laps, and telemetry samples
+  Current progress: `Session`, `Lap`, `TelemetrySample`, `Track`, and `Car` now exist in `TelemetryLab.Domain/Entities`, with `SessionType` and `TyreType` in `TelemetryLab.Domain/Enums`.
 - [ ] Define entities for race plans, drivers, and stints
 - [ ] Define entities for tyre allocations
 - [ ] Define rules for valid laps and leaderboard eligibility
@@ -75,7 +76,7 @@
 - [ ] Document what telemetry fields are currently available from the reader
 - [ ] Verify the telemetry feed includes position data suitable for drawing a track map
 - [ ] Create a sample local session JSON file from one run
-- [ ] Write the `Session`, `Lap`, and `TelemetrySample` domain classes
+- [x] Write the `Session`, `Lap`, and `TelemetrySample` domain classes
 - [ ] Create a simple ERD or table list for the core database
 - [x] Scaffold the ASP.NET Core API project
 - [x] Scaffold the Blazor web app project
