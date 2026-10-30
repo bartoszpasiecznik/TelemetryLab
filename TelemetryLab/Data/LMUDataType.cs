@@ -608,6 +608,9 @@ public readonly struct ScoringInfoV01
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 187)] //1.3 update, changed from 200 to 187 - 13 bytes
   public readonly byte[] mExpansion;
 
+
+//HACK:
+//TODO: REMOVE THIS WHEN I FIND A WAY TO FIX IT - WORKS FOR NOW
   public readonly int padding;
 
   // keeping this at the end of the public readonly structure to make it easier to replace in future versions

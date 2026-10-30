@@ -60,6 +60,26 @@ public class TelemetryLoop
                 playerScoring.mBestLapTime);
             
             var session = new Session(sessionInfo.mSession);
+
+            var playerDriver = new Driver(new string(playerScoring.mDriverName).TrimEnd('\0'));
+
+            var carData = new CarData(
+                playerScoring.mPlace,
+                playerTelemetry.mEngineRPM,
+                curSpeed.InKph,
+                playerTelemetry.mGear,
+                playerTelemetry.mFilteredThrottle,
+                playerTelemetry.mFilteredBrake,
+                playerTelemetry.mFilteredClutch,
+                playerTelemetry.mFilteredSteering,
+                playerTelemetry.mFuel,
+                new string(playerTelemetry.mFrontTireCompoundName).TrimEnd('\0'),
+                new string(playerTelemetry.mRearTireCompoundName).TrimEnd('\0')
+            );
+
+            var playerCar = new Car(new string(playerScoring.mVehicleName).TrimEnd('\0'), new string(playerScoring.mVehicleClass).TrimEnd('\0'), carData);
+
+            var track = new Track(new string(sessionInfo.mTrackName).TrimEnd('\0'), sessionInfo.mLapDist);
             
             curSpeed = Velocity.FromMs(System.Math.Sqrt((playerTelemetry.mLocalVel.x * playerTelemetry.mLocalVel.x) +
                                                         (playerTelemetry.mLocalVel.y * playerTelemetry.mLocalVel.y) +
@@ -75,12 +95,20 @@ public class TelemetryLoop
             }
             
             Console.WriteLine(
-                $"Session {session.SessionType} | " +
+                $"Player Name: {track.Name} | " +
+                $"Session {track.LapDistance} | " +
                 $"Lap {lap.LapNumber} | " +
-                $"Speed {curSpeed.InKph.ToString("F1")} km/h | " +
-                $"RPM {playerTelemetry.mEngineRPM:F0} | " +
-                $"Gear {playerTelemetry.mGear} | " +
-                $"Pos {playerScoring.mPlace}"
+                $"Speed {playerCar.CarData.Speed.ToString("F1")} km/h | " +
+                $"RPM {playerCar.CarData.Rpm:F0} | " +
+                $"Gear {playerCar.CarData.Gear} | " +
+                $"Pos {playerCar.CarData.Position} | " + 
+                $"Throttle {playerCar.CarData.Throttle:F2} | " +
+                $"Brake {playerCar.CarData.Brake:F2} | " +
+                $"Clutch {playerCar.CarData.Clutch:F2} | " +
+                $"Steering {playerCar.CarData.Steering:F2} | "+
+                $"Fuel {playerCar.CarData.Fuel:F2} | " + 
+                $"Front Tyre Compound {playerCar.CarData.FrontTyreCompound} | " +
+                $"Rear Tyre Compound {playerCar.CarData.RearTyreCompound}"
             );
         }
     }
