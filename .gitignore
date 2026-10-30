@@ -428,3 +428,8 @@ FodyWeavers.xsd
 *.msp
 
 .idea
+PROJECT_NOTES.md
+SharedMemoryInterface/InternalsPlugin.hpp
+SharedMemoryInterface/PluginObjects.hpp
+.gitignore
+SharedMemoryInterface/SharedMemoryInterface.hpp

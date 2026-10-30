@@ -13,7 +13,7 @@ public readonly struct SharedMemoryScoringData { // Remember to check CopyShared
 };
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
-public readonly struct SharedMemoryTelemtryData { // Remember to check CopySharedMemoryObj still works properly when updating this struct
+public readonly struct SharedMemoryTelemetryData { // Remember to check CopySharedMemoryObj still works properly when updating this struct
     public readonly byte activeVehicles;
     public readonly byte playerVehicleIdx;
     public readonly byte playerHasVehicle;
@@ -40,7 +40,7 @@ public readonly struct SharedMemoryPathData {
 public readonly struct SharedMemoryGeneric {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
     public readonly SharedMemoryEvent[] events;
-    public readonly long gameVersion;
+    public readonly int gameVersion;
     public readonly float FFBTorque;
     public readonly ApplicationStateV01 appInfo;
 };
@@ -50,7 +50,7 @@ public readonly struct SharedMemoryObjectOut { // Remember to check CopySharedMe
     public readonly SharedMemoryGeneric generic;
     public readonly SharedMemoryPathData paths;
     public readonly SharedMemoryScoringData scoring;
-    public readonly SharedMemoryTelemtryData telemetry;
+    public readonly SharedMemoryTelemetryData telemetry;
 };
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
@@ -296,7 +296,7 @@ public readonly struct TelemInfoV01
   // deltabest
   public readonly double mDeltaBest;
 
-  public readonly double mBatterybytegeFraction; // Battery bytege as fraction [0.0-1.0]
+  public readonly double mBatteryChargeFraction; // Battery charge as fraction [0.0-1.0]
 
   // electric boost motor
   public readonly double mElectricBoostMotorTorque; // current torque of boost motor (can be negative when in regenerating mode)
@@ -337,7 +337,7 @@ public readonly struct TelemInfoV01
   public readonly float mTimeGapPlaceAhead;
   public readonly float mTimeGapPlaceBehind;
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 30)]
-  public readonly byte[] mVehicleModel;
+  public readonly char[] mVehicleModel;
   public readonly IP_VehicleClass mVehicleClass;
   public readonly IP_VehicleChampionship mVehicleChampionship;
   
@@ -419,7 +419,7 @@ public readonly struct CameraControlInfoV01
 public readonly struct MessageInfoV01
 {
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-  public readonly byte[] mText;               // message to display
+  public readonly char[] mText;               // message to display
 
   public readonly byte mDestination;    // 0 = message center, 1 = chat (can be used for multiplayer chat commands)
   public readonly byte mTranslate;      // 0 = do not attempt to translate, 1 = attempt to translate
@@ -608,6 +608,8 @@ public readonly struct ScoringInfoV01
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 187)] //1.3 update, changed from 200 to 187 - 13 bytes
   public readonly byte[] mExpansion;
 
+  public readonly int padding;
+
   // keeping this at the end of the public readonly structure to make it easier to replace in future versions
   
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
@@ -708,7 +710,7 @@ public readonly struct ScreenInfoV01
 
   public readonly byte mOptionsLocation;       // 0=main UI, 1=track loading, 2=monitor, 3=on track
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 31)]
-  public readonly byte[] mOptionsPage;              // the name of the options page
+  public readonly char[] mOptionsPage;              // the name of the options page
 
   [MarshalAs(UnmanagedType.ByValArray, SizeConst = 224)]
   public readonly byte[] mExpansion;      // future use

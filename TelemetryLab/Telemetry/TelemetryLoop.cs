@@ -2,6 +2,7 @@ using System.Diagnostics;
 using TelemetryLab.Core;
 using TelemetryLab.Math;
 using TelemetryLab.Memory;
+using TelemetryLab.Models;
 
 namespace TelemetryLab.Telemetry;
 
@@ -11,11 +12,18 @@ public class TelemetryLoop
     private readonly PlayerDataProvider _provider;
     private readonly LapTracker _lapTracker;
 
-    public TelemetryLoop(TelemetryReader reader, PlayerDataProvider provider, LapTracker lapTracker)
+    private readonly SessionDataProvider _sessionProvider;
+
+    public TelemetryLoop(
+        TelemetryReader reader,
+        PlayerDataProvider provider,
+        LapTracker lapTracker,
+        SessionDataProvider sessionProvider)
     {
         _reader = reader;
         _provider = provider;
         _lapTracker = lapTracker;
+        _sessionProvider = sessionProvider;
     }
 
     public void Run()
@@ -44,6 +52,14 @@ public class TelemetryLoop
             
             var playerTelemetry = _provider.GetPlayerTelem(data, playerIndex);
             var playerScoring = _provider.GetPlayerScoring(data, playerIndex);
+            var sessionInfo = _provider.GetSessionInfo(data);
+
+            var lap = new Lap(
+                playerTelemetry.mLapNumber, 
+                playerScoring.mLastLapTime, 
+                playerScoring.mBestLapTime);
+            
+            var session = new Session(sessionInfo.mSession);
             
             curSpeed = Velocity.FromMs(System.Math.Sqrt((playerTelemetry.mLocalVel.x * playerTelemetry.mLocalVel.x) +
                                                         (playerTelemetry.mLocalVel.y * playerTelemetry.mLocalVel.y) +
@@ -53,13 +69,14 @@ public class TelemetryLoop
             if (_lapTracker.IsNewLap(playerTelemetry.mLapNumber))
             {
                 Console.WriteLine();
-                Console.WriteLine($"=== NEW LAP: {playerTelemetry.mLapNumber} ===");
-                Console.WriteLine($"Last lap time: {playerScoring.mLastLapTime:F3}");
-                Console.WriteLine($"Best lap time: {playerScoring.mBestLapTime:F3}");
+                Console.WriteLine($"=== NEW LAP: {lap.LapNumber} ===");
+                Console.WriteLine($"Last lap time: {lap.LastLapTime:F3}");
+                Console.WriteLine($"Best lap time: {lap.BestLapTime:F3}");
             }
             
             Console.WriteLine(
-                $"Lap {playerTelemetry.mLapNumber} | " +
+                $"Session {session.SessionType} | " +
+                $"Lap {lap.LapNumber} | " +
                 $"Speed {curSpeed.InKph.ToString("F1")} km/h | " +
                 $"RPM {playerTelemetry.mEngineRPM:F0} | " +
                 $"Gear {playerTelemetry.mGear} | " +

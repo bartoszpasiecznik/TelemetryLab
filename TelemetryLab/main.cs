@@ -22,8 +22,9 @@ class main
 
             var provider = new PlayerDataProvider();
             var lapTracker = new LapTracker();
+            var sessionProvider = new SessionDataProvider();
 
-            var loop = new TelemetryLoop(reader, provider, lapTracker);
+            var loop = new TelemetryLoop(reader, provider, lapTracker, sessionProvider);
             loop.Run();
         }
         catch (Exception e)

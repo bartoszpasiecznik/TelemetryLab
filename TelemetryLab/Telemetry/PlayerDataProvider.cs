@@ -25,4 +25,9 @@ public class PlayerDataProvider
     {
         return data.data.scoring.vehScoringInfo[player_index];
     }
+
+    public ScoringInfoV01 GetSessionInfo(SharedMemoryLayout data)
+    {
+        return data.data.scoring.scoringInfo;
+    }
 }
