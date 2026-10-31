@@ -50,16 +50,16 @@ In progress: build the C# message classes that match `docs/snapshot.json`, in `T
 
 Pattern: one class per JSON `{ }` block, one PascalCase property per field, constructor sets every property. Build from the inside out.
 
-- [ ] `MotionInfo` (started)
-- [ ] `InputsInfo`
-- [ ] `TyreInfo`
-- [ ] `TickSample` (uses `MotionInfo`, `InputsInfo`, `TyreInfo`)
-- [ ] `TickBatchMessage` (list of `TickSample`)
-- [ ] `TrackInfo`, `CarInfo`
-- [ ] `SessionStartMessage`
-- [ ] `PitStopInfo`
-- [ ] `LapCompletedMessage` (`PitStop` can be null)
-- [ ] Later: serialize to camelCase JSON with `System.Text.Json` (`JsonNamingPolicy.CamelCase`)
+- [x] `MotionInfo`
+- [x] `InputsInfo`
+- [x] `TyreInfo`
+- [x] `TickSample` (uses `MotionInfo`, `InputsInfo`, `TyreInfo`)
+- [x] `TickBatchMessage` (list of `TickSample`)
+- [x] `TrackInfo`, `CarInfo`
+- [x] `SessionStartMessage`
+- [x] `PitStopInfo`
+- [x] `LapCompletedMessage` (`PitStop` can be null)
+- [ ] Next: serialize to camelCase JSON with `System.Text.Json` (`JsonNamingPolicy.CamelCase`)
 
 ## Snapshot design decisions (see `docs/snapshot.json`)
 - Three message types: `sessionStart` (once), `lapCompleted` (per lap), `tickBatch` (batched 30 Hz samples)

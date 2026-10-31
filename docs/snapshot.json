@@ -6,6 +6,7 @@
     "sessionType": 10,
     "track": {
       "name": "Circuit de la Sarthe",
+      "trackLayout": "24h",
       "lapLengthM": 13626
     },
     "car": {
@@ -27,7 +28,8 @@
       "fuelAddedL": 58.2,
       "tyresChanged": true,
       "driverSwapped": true,
-      "previousDriverName": "Jan Kowalski"
+      "previousDriverName": "Jan Kowalski",
+      "newDriverName": "Bartosz Pasiecznik"
     }
   },
 
