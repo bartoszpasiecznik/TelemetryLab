@@ -1,0 +1,61 @@
+{
+  "sessionStart": {
+    "type": "sessionStart",
+    "sessionId": "3f2a9c1e-7b4d-4e8a-9f10-2c6d5e8b1a47",
+    "startedAt": "2026-10-30T20:15:00Z",
+    "sessionType": 10,
+    "track": {
+      "name": "Circuit de la Sarthe",
+      "lapLengthM": 13626
+    },
+    "car": {
+      "name": "Porsche 963 #6",
+      "className": "Hypercar"
+    }
+  },
+
+  "lapCompleted": {
+    "type": "lapCompleted",
+    "sessionId": "3f2a9c1e-7b4d-4e8a-9f10-2c6d5e8b1a47",
+    "lapNumber": 4,
+    "driverName": "Bartosz Pasiecznik",
+    "lapTimeS": 248.913,
+    "bestLapTimeS": 211.392,
+    "fuelUsedL": 3.41,
+    "pitStop": {
+      "stationaryTimeS": 34.6,
+      "fuelAddedL": 58.2,
+      "tyresChanged": true,
+      "driverSwapped": true,
+      "previousDriverName": "Jan Kowalski"
+    }
+  },
+
+  "tickBatch": {
+    "type": "tickBatch",
+    "sessionId": "3f2a9c1e-7b4d-4e8a-9f10-2c6d5e8b1a47",
+    "batchSeq": 1287,
+    "samples": [
+      {
+        "elapsedTimeS": 1043.267,
+        "lapNumber": 5,
+        "lapDistanceM": 4821.6,
+        "position": 3,
+        "motion": { "speedKph": 287.4, "rpm": 7840, "gear": 6 },
+        "inputs": { "throttle": 1.0, "brake": 0.0, "clutch": 0.0, "steering": -0.04 },
+        "fuelL": 41.7,
+        "tyres": { "frontCompound": "Medium", "rearCompound": "Medium" }
+      },
+      {
+        "elapsedTimeS": 1043.300,
+        "lapNumber": 5,
+        "lapDistanceM": 4824.3,
+        "position": 3,
+        "motion": { "speedKph": 287.9, "rpm": 7855, "gear": 6 },
+        "inputs": { "throttle": 1.0, "brake": 0.0, "clutch": 0.0, "steering": -0.03 },
+        "fuelL": 41.7,
+        "tyres": { "frontCompound": "Medium", "rearCompound": "Medium" }
+      }
+    ]
+  }
+}

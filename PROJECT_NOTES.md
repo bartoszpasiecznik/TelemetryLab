@@ -46,17 +46,46 @@ TypeScript can't easily read shared memory, so the C# reader stays as a small co
 8. Optional extensions: Prettier, ESLint
 
 ## Current task
-Session data is connected to the live telemetry loop and prints successfully.
+In progress: build the C# message classes that match `docs/snapshot.json`, in `TelemetryLab/Messages/` (namespace `TelemetryLab.Messages`).
+
+Pattern: one class per JSON `{ }` block, one PascalCase property per field, constructor sets every property. Build from the inside out.
+
+- [ ] `MotionInfo` (started)
+- [ ] `InputsInfo`
+- [ ] `TyreInfo`
+- [ ] `TickSample` (uses `MotionInfo`, `InputsInfo`, `TyreInfo`)
+- [ ] `TickBatchMessage` (list of `TickSample`)
+- [ ] `TrackInfo`, `CarInfo`
+- [ ] `SessionStartMessage`
+- [ ] `PitStopInfo`
+- [ ] `LapCompletedMessage` (`PitStop` can be null)
+- [ ] Later: serialize to camelCase JSON with `System.Text.Json` (`JsonNamingPolicy.CamelCase`)
+
+## Snapshot design decisions (see `docs/snapshot.json`)
+- Three message types: `sessionStart` (once), `lapCompleted` (per lap), `tickBatch` (batched 30 Hz samples)
+- Driver and pit stop info live on `lapCompleted` (driver swaps happen mid-session); `pitStop` is `null` on laps without a stop
+- Ticks are sent in batches (~1 per second) with a `batchSeq` counter so the backend can spot gaps and duplicates
+- Units are in field names (`Kph`, `M`, `S`, `L`); the collector does all conversions
 
 ## Next steps
-1. After those values are verified, plan how to package one complete telemetry snapshot for the TypeScript backend
+1. Add track position (`VehicleScoringInfoV01.mLapDist`)
+2. Fix small issues in `TelemetryLoop`: `curSpeed` is computed after `CarData` is built (one tick late); debug print labels are wrong
+3. Fix the misleading "Round to 2 decimal places" comment in `Track` (code uses `Truncate`)
 
-Defer sector times for now; add them later.
+Defer sector times and per-wheel tyre data (temperature/wear/pressure from `TelemInfoV01.mWheel[4]`) for now; add them later.
 
 ## Progress log
 - Completed: TypeScript lap-time array exercise.
 - Completed: Session model is connected to live data and prints in `TelemetryLoop`.
 - Completed: `Driver` model uses the player's name from scoring data and prints it in `TelemetryLoop`.
--  Connect the existing `Car` and `Track` models to their live source fields.
-- Verify the `Lap` model output against the game.
-- Add remaining telemetry fields one at a time: speed/gear, throttle/brake, track position, fuel, and tyre temperature/wear.
+- Completed: `Car` (name, class) and `CarData` (position, RPM, speed, gear, throttle, brake, clutch, steering, fuel, tyre compounds) connected to live data.
+- Completed: `Track` (name, lap length) connected to live data.
+- Completed: `Lap` (lap number, last/best lap time).
+- Completed: Snapshot message design (`docs/snapshot.json`).
+
+## Needs in-game verification (requires Windows + LMU)
+- `Car` / `CarData`: all fields, especially speed (km/h) and steering/throttle ranges
+- `Track`: name and lap length
+- Track position, once added
+- Sign of `mFilteredSteering` (which way is left?)
+- Which driver the game reports on the lap where a driver swap happens
