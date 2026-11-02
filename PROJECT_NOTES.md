@@ -54,7 +54,7 @@ Learn each concept with mock data first; keep the code small and ask for hints/r
 - [x] Use the message shapes in `docs/snapshot.json` to define TypeScript types for `sessionStart`, `lapCompleted`, and `tickBatch`.
 - [x] Create a small mock session JSON file matching that snapshot and load it from TypeScript. Print the fastest valid completed lap; keep the sample data small enough to inspect by hand.
 - [x] Try missing or incorrectly typed JSON fields and decide how to report invalid input instead of assuming parsed JSON matches a TypeScript type.
-- [ ] Serialize the C# message classes to camelCase JSON, then load that output in TypeScript and confirm it produces the same result as the mock fixture.
+- [X] Serialize the C# message classes to camelCase JSON, then load that output in TypeScript and confirm it produces the same result as the mock fixture.
 - [ ] Only after the file-based flow works, continue with PostgreSQL and the API phases below.
 
 ## Current task
