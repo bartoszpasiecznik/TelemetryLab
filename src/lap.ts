@@ -1,7 +1,7 @@
 type Lap = {
   lapNumber: number;
   driverName: string;
-  lapTimeSeconds: number;
+  lapTimeS: number;
   valid: boolean;
 };
 
@@ -11,7 +11,7 @@ export function findFastestValidLap(laps: Lap[]): Lap | undefined {
   let currentFastestLap: Lap | undefined;
 
   for (const lap of validLaps) {
-    if (currentFastestLap === undefined || lap.lapTimeSeconds < currentFastestLap.lapTimeSeconds) {
+    if (currentFastestLap === undefined || lap.lapTimeS < currentFastestLap.lapTimeS) {
       currentFastestLap = lap;
     }
   }

@@ -1,0 +1,15 @@
+{
+  "lapCompleted": [
+    {
+      "type": "lapCompleted",
+      "sessionId": "session-123",
+      "lapNumber": 1,
+      "valid": true,
+      "driverName": "John Doe",
+      "lapTimeS": 123.45,
+      "bestLapTimeS": 120,
+      "fuelUsedL": 5,
+      "pitStop": null
+    }
+  ]
+}

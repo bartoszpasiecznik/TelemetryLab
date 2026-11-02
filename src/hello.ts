@@ -1,18 +1,51 @@
+import {readFileSync} from "node:fs";
 import {findFastestValidLap, type Lap } from "./lap";
+import {type LapCompletedMessage} from "./messages";
 
-const laps: Lap[] = [
-  { lapNumber: 1, driverName: "Mira", lapTimeSeconds: 92.15, valid: true },
-  { lapNumber: 2, driverName: "Mira", lapTimeSeconds: 91.42, valid: false },
-  { lapNumber: 3, driverName: "Mira", lapTimeSeconds: 90.80, valid: false },
-  { lapNumber: 4, driverName: "Mira", lapTimeSeconds: 91.67, valid: true },
-];
+function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === "object" && value !== null;
+}
 
-const currentFastestLap = findFastestValidLap(laps);
+const raw = readFileSync("src/from-csharp.json", "utf-8");
+// const session = JSON.parse(raw) as {
+//     lapCompleted: LapCompletedMessage[];
+// };
 
-if (currentFastestLap === undefined) {
-    console.log("No valid laps were recorded.");
+const session: unknown = JSON.parse(raw);
+
+if (!isRecord(session) || !Array.isArray(session.lapCompleted)) {
+    throw new Error("Invalid session data");
+}
+
+
+const completedLaps: unknown[] = session.lapCompleted;
+
+const laps: Lap[] = completedLaps.map((completedLap) => {
+    if (!isRecord(completedLap)) {
+        throw new Error("Invalid lap data");
+    }
+    if (
+    typeof completedLap.lapNumber !== "number" ||
+    typeof completedLap.driverName !== "string" ||
+    typeof completedLap.lapTimeS !== "number" ||
+    typeof completedLap.valid !== "boolean"
+) {
+    throw new Error("Invalid lap data: incorrect field types");
+}
+    return {
+        lapNumber: completedLap.lapNumber,
+        driverName: completedLap.driverName,
+        lapTimeS: completedLap.lapTimeS,
+        valid: completedLap.valid
+    };
+});
+
+const fastestLap = findFastestValidLap(laps);
+
+if (fastestLap) {
+    console.log(`Fastest valid lap: ${fastestLap.lapNumber} by ${fastestLap.driverName} with time ${fastestLap.lapTimeS} seconds.`);
 } else {
-    console.log(`The fastest valid lap was lap number ${currentFastestLap.lapNumber} by ${currentFastestLap.driverName} with a time of ${currentFastestLap.lapTimeSeconds} seconds.`);
+    console.log("No valid laps found.");
 }
 
 

@@ -52,8 +52,8 @@ Learn each concept with mock data first; keep the code small and ask for hints/r
 - [x] Check the exercise with edge cases: no laps, no valid laps, and a tie. Make the fastest-lap logic return `undefined` when there is no valid result.
 - [x] Move the lap type and fastest-lap logic into a small module under `src/` once the exercise works; keep `hello.ts` as a simple runner.
 - [x] Use the message shapes in `docs/snapshot.json` to define TypeScript types for `sessionStart`, `lapCompleted`, and `tickBatch`.
-- [ ] Create a small mock session JSON file matching that snapshot and load it from TypeScript. Print the fastest valid completed lap; keep the sample data small enough to inspect by hand.
-- [ ] Try missing or incorrectly typed JSON fields and decide how to report invalid input instead of assuming parsed JSON matches a TypeScript type.
+- [x] Create a small mock session JSON file matching that snapshot and load it from TypeScript. Print the fastest valid completed lap; keep the sample data small enough to inspect by hand.
+- [x] Try missing or incorrectly typed JSON fields and decide how to report invalid input instead of assuming parsed JSON matches a TypeScript type.
 - [ ] Serialize the C# message classes to camelCase JSON, then load that output in TypeScript and confirm it produces the same result as the mock fixture.
 - [ ] Only after the file-based flow works, continue with PostgreSQL and the API phases below.
 
