@@ -2,11 +2,12 @@ namespace TelemetryLab.Messages;
 
 public class LapCompletedMessage
 {
-    public LapCompletedMessage(string type, string sessionId, int lapNumber, string driverName, double lapTimeS, double bestLapTimeS, double fuelUsedL, PitStopInfo? pitStop)
+    public LapCompletedMessage(string type, string sessionId, int lapNumber, bool valid, string driverName, double lapTimeS, double bestLapTimeS, double fuelUsedL, PitStopInfo? pitStop)
     {
         Type = type;
         SessionId = sessionId;
         LapNumber = lapNumber;
+        Valid = valid;
         DriverName = driverName;
         LapTimeS = lapTimeS;
         BestLapTimeS = bestLapTimeS;
@@ -17,6 +18,7 @@ public class LapCompletedMessage
     public string Type { get; set; }
     public string SessionId { get; set; }
     public int LapNumber { get; set; }
+    public bool Valid { get; set; }
     public string DriverName { get; set; }
     public double LapTimeS { get; set; }
     public double BestLapTimeS { get; set; }

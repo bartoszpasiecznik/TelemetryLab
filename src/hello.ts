@@ -1,6 +1,19 @@
-const driverName: string = "Pasieka";
-const lapTimes: number[] = [72.5, 71.8, 73.2, 70.9];
+import {findFastestValidLap, type Lap } from "./lap";
 
-const fastestLapTime: number = Math.min(...lapTimes);
+const laps: Lap[] = [
+  { lapNumber: 1, driverName: "Mira", lapTimeSeconds: 92.15, valid: true },
+  { lapNumber: 2, driverName: "Mira", lapTimeSeconds: 91.42, valid: false },
+  { lapNumber: 3, driverName: "Mira", lapTimeSeconds: 90.80, valid: false },
+  { lapNumber: 4, driverName: "Mira", lapTimeSeconds: 91.67, valid: true },
+];
 
-console.log(`Driver named ${driverName} did a fastest lap time of ${fastestLapTime} seconds.`);
+const currentFastestLap = findFastestValidLap(laps);
+
+if (currentFastestLap === undefined) {
+    console.log("No valid laps were recorded.");
+} else {
+    console.log(`The fastest valid lap was lap number ${currentFastestLap.lapNumber} by ${currentFastestLap.driverName} with a time of ${currentFastestLap.lapTimeSeconds} seconds.`);
+}
+
+
+

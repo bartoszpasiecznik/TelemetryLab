@@ -45,6 +45,18 @@ TypeScript can't easily read shared memory, so the C# reader stays as a small co
 7. `git init`, add `.gitignore` containing `node_modules`, then `git add .` and `git commit -m "Initial setup"`
 8. Optional extensions: Prettier, ESLint
 
+## TypeScript implementation steps
+Learn each concept with mock data first; keep the code small and ask for hints/review rather than a full solution.
+
+- [x] Finish the mock lap exercise in `src/hello.ts`: define a `Lap` type, annotate the array as `Lap[]`, filter valid laps, find the fastest valid lap, and print its driver, lap number, and time.
+- [x] Check the exercise with edge cases: no laps, no valid laps, and a tie. Make the fastest-lap logic return `undefined` when there is no valid result.
+- [x] Move the lap type and fastest-lap logic into a small module under `src/` once the exercise works; keep `hello.ts` as a simple runner.
+- [x] Use the message shapes in `docs/snapshot.json` to define TypeScript types for `sessionStart`, `lapCompleted`, and `tickBatch`.
+- [ ] Create a small mock session JSON file matching that snapshot and load it from TypeScript. Print the fastest valid completed lap; keep the sample data small enough to inspect by hand.
+- [ ] Try missing or incorrectly typed JSON fields and decide how to report invalid input instead of assuming parsed JSON matches a TypeScript type.
+- [ ] Serialize the C# message classes to camelCase JSON, then load that output in TypeScript and confirm it produces the same result as the mock fixture.
+- [ ] Only after the file-based flow works, continue with PostgreSQL and the API phases below.
+
 ## Current task
 In progress: build the C# message classes that match `docs/snapshot.json`, in `TelemetryLab/Messages/` (namespace `TelemetryLab.Messages`).
 
@@ -63,6 +75,7 @@ Pattern: one class per JSON `{ }` block, one PascalCase property per field, cons
 
 ## Snapshot design decisions (see `docs/snapshot.json`)
 - Three message types: `sessionStart` (once), `lapCompleted` (per lap), `tickBatch` (batched 30 Hz samples)
+- Each `lapCompleted` message includes a `valid` boolean for lap validity
 - Driver and pit stop info live on `lapCompleted` (driver swaps happen mid-session); `pitStop` is `null` on laps without a stop
 - Ticks are sent in batches (~1 per second) with a `batchSeq` counter so the backend can spot gaps and duplicates
 - Units are in field names (`Kph`, `M`, `S`, `L`); the collector does all conversions

@@ -1,0 +1,55 @@
+{
+  "lapCompleted": [
+    {
+      "type": "lapCompleted",
+      "sessionId": "8c741f2e-6a9d-4c53-b217-0e91f35a6284",
+      "lapNumber": 1,
+      "valid": true,
+      "driverName": "Jan Kowalski",
+      "lapTimeS": 218.742,
+      "bestLapTimeS": 218.742,
+      "fuelUsedL": 3.62,
+      "pitStop": null
+    },
+    {
+      "type": "lapCompleted",
+      "sessionId": "8c741f2e-6a9d-4c53-b217-0e91f35a6284",
+      "lapNumber": 2,
+      "valid": false,
+      "driverName": "Jan Kowalski",
+      "lapTimeS": 205.5,
+      "bestLapTimeS": 218.742,
+      "fuelUsedL": 3.48,
+      "pitStop": null
+    },
+    {
+      "type": "lapCompleted",
+      "sessionId": "8c741f2e-6a9d-4c53-b217-0e91f35a6284",
+      "lapNumber": 3,
+      "valid": true,
+      "driverName": "Bartosz Pasiecznik",
+      "lapTimeS": 211.392,
+      "bestLapTimeS": 211.392,
+      "fuelUsedL": 3.41,
+      "pitStop": {
+        "stationaryTimeS": 34.6,
+        "fuelAddedL": 58.2,
+        "tyresChanged": true,
+        "driverSwapped": true,
+        "previousDriverName": "Jan Kowalski",
+        "newDriverName": "Bartosz Pasiecznik"
+      }
+    },
+    {
+      "type": "lapCompleted",
+      "sessionId": "8c741f2e-6a9d-4c53-b217-0e91f35a6284",
+      "lapNumber": 4,
+      "valid": true,
+      "driverName": "Bartosz Pasiecznik",
+      "lapTimeS": 212.105,
+      "bestLapTimeS": 211.392,
+      "fuelUsedL": 3.55,
+      "pitStop": null
+    }
+  ]
+}
